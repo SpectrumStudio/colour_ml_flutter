@@ -18,10 +18,16 @@ class _InputSceenState extends State<InputSceen> {
     predValue = "click VERIFY button";
   }
 
-  Future<void> predData() async {
+  Future<void> predData(var red,var green, var blue, var intensity) async {
+    var redPar=red.text;
+    var greenPar=green.text;
+    var bluePar=blue.text;
+    var intensityPar=intensity.text;
+    //print(redPar.runtimeType);
     final interpreter = await Interpreter.fromAsset('trained_model.tflite');
     var input = [
-      [214.38, 183.824, 214.692, 204.876]
+      [double.parse(redPar), double.parse(greenPar), double.parse(bluePar), double.parse(intensityPar)]
+      //[100.23,100.23,100.23,100.23]
     ];
     var output = List.filled(4, 0).reshape([1, 4]);
     interpreter.run(input, output);
@@ -61,6 +67,7 @@ class _InputSceenState extends State<InputSceen> {
         Spacer(),
         TextField(
           controller: redController,
+          keyboardType: TextInputType.number,
           decoration: InputDecoration(hintText: "Red value"),
         ),
         SizedBox(
@@ -68,6 +75,7 @@ class _InputSceenState extends State<InputSceen> {
         ),
         TextField(
           controller: greenController,
+          keyboardType: TextInputType.number,
           decoration: InputDecoration(hintText: "Green Value"),
         ),
         SizedBox(
@@ -75,6 +83,7 @@ class _InputSceenState extends State<InputSceen> {
         ),
         TextField(
           controller: blueController,
+          keyboardType: TextInputType.number,
           decoration: InputDecoration(hintText: "Blue Value"),
         ),
         SizedBox(
@@ -82,13 +91,14 @@ class _InputSceenState extends State<InputSceen> {
         ),
         TextField(
           controller: intensityController,
+          keyboardType: TextInputType.number,
           decoration: InputDecoration(hintText: "Intensity Value"),
         ),
         SizedBox(
           height: 16,
         ),
         FlatButton(
-          onPressed: predData,
+          onPressed: () => predData(redController,greenController,blueController,intensityController),
           child: Text("VERIFY"),
           color: Colors.blue,
           textColor: Colors.white,
@@ -107,6 +117,8 @@ class _InputSceenState extends State<InputSceen> {
     ),
     );
   }
+
+
 }
 
 
